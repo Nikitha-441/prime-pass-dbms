@@ -41,8 +41,9 @@ public class AuthService {
         return response;
     }
 
-    public Map<String, Object> signup(String name, String email, String password) {
+    public Map<String, Object> signup(String name, String email, String password, String role) {
         Map<String, Object> response = new HashMap<>();
+        String normalizedRole = "admin".equalsIgnoreCase(role) ? "admin" : "user";
         
         // Check if user already exists
         if (userDao.findByEmail(email) != null) {
@@ -51,7 +52,7 @@ public class AuthService {
             return response;
         }
 
-        User user = userDao.createUser(name, email, password);
+        User user = userDao.createUser(name, email, password, normalizedRole);
         if (user == null) {
             response.put("success", false);
             response.put("message", "Registration failed");

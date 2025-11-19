@@ -11,6 +11,7 @@ public class Event {
     private String organizerName;
     private java.time.LocalDateTime nextShowDate;
     private String nextVenue;
+    private String nextVenueLocation;
 
     public Event() {}
 
@@ -43,5 +44,8 @@ public class Event {
 
     public String getNextVenue() { return nextVenue; }
     public void setNextVenue(String nextVenue) { this.nextVenue = nextVenue; }
+
+    public String getNextVenueLocation() { return nextVenueLocation; }
+    public void setNextVenueLocation(String nextVenueLocation) { this.nextVenueLocation = nextVenueLocation; }
 }
 

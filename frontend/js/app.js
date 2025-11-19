@@ -1,14 +1,40 @@
 const API = 'http://localhost:5000';
+const TOKEN_KEY = 'pp_token';
+const ROLE_KEY = 'pp_role';
 
-export function saveToken(token) { localStorage.setItem('pp_token', token); }
-export function getToken() { return localStorage.getItem('pp_token'); }
-export function removeToken() {
-  localStorage.removeItem('pp_token');
-  localStorage.removeItem('pp_role');
+function setStorage(key, value, remember) {
+  if (remember) {
+    localStorage.setItem(key, value);
+    sessionStorage.removeItem(key);
+  } else {
+    sessionStorage.setItem(key, value);
+    localStorage.removeItem(key);
+  }
+}
+
+export function saveToken(token, remember = true) {
+  if (!token) return;
+  setStorage(TOKEN_KEY, token, remember);
+}
+
+export function saveRole(role, remember = true) {
+  if (!role) return;
+  setStorage(ROLE_KEY, role, remember);
+}
+
+export function getToken() {
+  return localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY);
 }
 
 export function getRole() {
-  return localStorage.getItem('pp_role');
+  return localStorage.getItem(ROLE_KEY) || sessionStorage.getItem(ROLE_KEY);
+}
+
+export function removeToken() {
+  localStorage.removeItem(TOKEN_KEY);
+  sessionStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(ROLE_KEY);
+  sessionStorage.removeItem(ROLE_KEY);
 }
 
 export async function apiFetch(path, opts = {}) {

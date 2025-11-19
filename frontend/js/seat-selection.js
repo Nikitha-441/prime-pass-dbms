@@ -2,6 +2,11 @@ import { apiFetch, getToken } from './app.js';
 
 const params = new URLSearchParams(window.location.search);
 const showtime_id = params.get('showtime_id');
+const showtimeIdNum = Number(showtime_id);
+if (!showtimeIdNum) {
+  seatGrid.innerHTML = '<p>Invalid showtime</p>';
+  continueBtn?.setAttribute('disabled', 'disabled');
+}
 const seatGrid = document.getElementById('seatGrid');
 const continueBtn = document.getElementById('continueBtn');
 let selected = [];
@@ -9,7 +14,7 @@ let selected = [];
 async function loadSeats() {
   try {
     // Backend expects showtimeId as the request parameter name
-    const seats = await apiFetch('/seats?showtimeId=' + showtime_id);
+    const seats = await apiFetch('/seats?showtimeId=' + showtimeIdNum);
     seatGrid.innerHTML = '';
     seats.forEach(s => {
       const seatBtn = document.createElement('button');
@@ -29,7 +34,7 @@ async function loadSeats() {
       }
 
       seatBtn.addEventListener('click', () => {
-        const id = s.seatId;
+        const id = Number(s.seatId);
         if (selected.includes(id)) {
           selected = selected.filter(x => x !== id);
           seatBtn.classList.remove('selected');
@@ -55,12 +60,12 @@ continueBtn?.addEventListener('click', async () => {
   const token = getToken();
   if (!token) {
     // Save selection in localStorage and redirect to login
-    localStorage.setItem('pp_pending', JSON.stringify({ showtime_id, seats: selected }));
+    localStorage.setItem('pp_pending', JSON.stringify({ showtimeId: showtimeIdNum, seats: selected }));
     window.location.href = 'login.html';
     return;
   }
   // Proceed to mock payment page with selection
-  localStorage.setItem('pp_pending', JSON.stringify({ showtime_id, seats: selected }));
+  localStorage.setItem('pp_pending', JSON.stringify({ showtimeId: showtimeIdNum, seats: selected }));
   window.location.href = 'payment.html';
 });
 

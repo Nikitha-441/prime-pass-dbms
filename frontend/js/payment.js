@@ -23,8 +23,18 @@ async function loadPayment() {
     }
 
     // Get showtime details to calculate price
-    const showtimeId = pendingBooking.showtime_id;
-    const seats = pendingBooking.seats;
+    const showtimeId = Number(pendingBooking.showtimeId ?? pendingBooking.showtime_id);
+    if (!showtimeId) {
+      alert('Missing showtime information.');
+      window.location.href = 'events.html';
+      return;
+    }
+    const seats = (pendingBooking.seats || []).map(Number).filter(Boolean);
+    if (!seats.length) {
+      alert('No seats selected for this booking.');
+      window.location.href = 'events.html';
+      return;
+    }
     
     // Fetch showtime details to get price
     // Try the showtime endpoint, fallback to finding it from events
@@ -69,8 +79,8 @@ form?.addEventListener('submit', async (e) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        showtimeId: pendingBooking.showtime_id,
-        seatIds: pendingBooking.seats,
+        showtimeId,
+        seatIds: seats,
         paymentMethod: 'CreditCard' // Mock payment
       })
     });

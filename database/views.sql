@@ -14,13 +14,33 @@ SELECT
     c.category_name,
     o.name AS organizer_name,
     COUNT(DISTINCT st.showtime_id) AS showtime_count,
-    MIN(st.show_date) AS next_show_date,
-    MIN(v.name) AS next_venue
+    (
+        SELECT st2.show_date
+        FROM Showtime st2
+        WHERE st2.event_id = e.event_id
+        ORDER BY st2.show_date
+        LIMIT 1
+    ) AS next_show_date,
+    (
+        SELECT v2.name
+        FROM Showtime st2
+        JOIN Venue v2 ON st2.venue_id = v2.venue_id
+        WHERE st2.event_id = e.event_id
+        ORDER BY st2.show_date
+        LIMIT 1
+    ) AS next_venue,
+    (
+        SELECT v2.location
+        FROM Showtime st2
+        JOIN Venue v2 ON st2.venue_id = v2.venue_id
+        WHERE st2.event_id = e.event_id
+        ORDER BY st2.show_date
+        LIMIT 1
+    ) AS next_venue_location
 FROM Event e
 JOIN Category c ON e.category_id = c.category_id
 JOIN Organizer o ON e.organizer_id = o.organizer_id
 LEFT JOIN Showtime st ON e.event_id = st.event_id
-LEFT JOIN Venue v ON st.venue_id = v.venue_id
 GROUP BY e.event_id, e.event_name, e.description, e.base_price, e.organizer_id, e.category_id, c.category_name, o.name;
 
 -- View for Users: Shows event details with showtimes

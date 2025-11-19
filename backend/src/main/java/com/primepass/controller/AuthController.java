@@ -32,8 +32,9 @@ public class AuthController {
         String name = request.get("name");
         String email = request.get("email");
         String password = request.get("password");
+        String role = request.getOrDefault("role", "user");
         
-        Map<String, Object> result = authService.signup(name, email, password);
+        Map<String, Object> result = authService.signup(name, email, password, role);
         
         if ((Boolean) result.get("success")) {
             return ResponseEntity.ok(result);

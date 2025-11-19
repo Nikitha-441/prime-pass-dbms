@@ -37,6 +37,7 @@ public class EventDao {
                 }
             } catch (SQLException ignored) {}
             try { event.setNextVenue(rs.getString("next_venue")); } catch (SQLException ignored) {}
+            try { event.setNextVenueLocation(rs.getString("next_venue_location")); } catch (SQLException ignored) {}
             return event;
         }
     };

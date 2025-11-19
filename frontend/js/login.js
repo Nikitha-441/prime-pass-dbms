@@ -1,4 +1,4 @@
-import { loginUser, saveToken } from './app.js';
+import { loginUser, saveToken, saveRole } from './app.js';
 
 const loginForm = document.getElementById('loginForm');
 
@@ -21,10 +21,10 @@ loginForm?.addEventListener('submit', async (e) => {
       return;
     }
 
-    saveToken(result.token);
+    saveToken(result.token, true);
     const user = result.user;
     if (user && user.role) {
-      localStorage.setItem('pp_role', user.role);
+      saveRole(user.role, true);
     }
 
     if (user.role === 'admin') {

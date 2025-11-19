@@ -19,7 +19,9 @@ function formatDate(dateStr) {
 }
 
 function populateCategories() {
-  const categories = Array.from(new Set(events.map(ev => ev.categoryName))).sort();
+  if (!categorySelect) return;
+  Array.from(categorySelect.querySelectorAll('option:not([value="all"])')).forEach(opt => opt.remove());
+  const categories = Array.from(new Set(events.map(ev => ev.categoryName).filter(Boolean))).sort();
   categories.forEach(cat => {
     const option = document.createElement('option');
     option.value = cat;
@@ -55,7 +57,7 @@ function renderCards() {
       <p>${ev.description || 'Details coming soon.'}</p>
       <p><strong>Category:</strong> ${ev.categoryName}</p>
       <p><strong>Next show:</strong> ${formatDate(ev.nextShowDate)}</p>
-      <p><strong>Venue:</strong> ${ev.nextVenue || 'TBA'}</p>
+      <p><strong>Venue:</strong> ${ev.nextVenue || 'TBA'} ${ev.nextVenueLocation ? `• ${ev.nextVenueLocation}` : ''}</p>
       <p><strong>Base price:</strong> ₹${ev.basePrice}</p>
       <a class="btn" href="event-details.html?event_id=${ev.eventId}">View Details</a>
     </div>
@@ -64,16 +66,17 @@ function renderCards() {
 }
 
 function applyFilters() {
-  const query = (searchInput.value || '').toLowerCase().trim();
-  const category = categorySelect.value;
-  const dateValue = dateInput.value ? new Date(dateInput.value) : null;
-  const maxPrice = Number(priceInput.value);
+  const query = (searchInput?.value || '').toLowerCase().trim();
+  const category = categorySelect?.value || 'all';
+  const dateValue = dateInput?.value ? new Date(dateInput.value) : null;
+  const maxPrice = priceInput?.value ? Number(priceInput.value) : null;
 
   filtered = events.filter(ev => {
     const matchesSearch = !query ||
       ev.eventName.toLowerCase().includes(query) ||
       (ev.description || '').toLowerCase().includes(query) ||
-      (ev.nextVenue || '').toLowerCase().includes(query);
+      (ev.nextVenue || '').toLowerCase().includes(query) ||
+      (ev.nextVenueLocation || '').toLowerCase().includes(query);
     const matchesCategory = category === 'all' || ev.categoryName === category;
     const matchesDate = !dateValue || (ev.nextShowDate && new Date(ev.nextShowDate) >= dateValue);
     const matchesPrice = !maxPrice || ev.basePrice <= maxPrice;
@@ -106,6 +109,10 @@ resetBtn?.addEventListener('click', () => {
   currentPage = 1;
   renderCards();
 });
+searchInput?.addEventListener('input', applyFilters);
+categorySelect?.addEventListener('change', applyFilters);
+dateInput?.addEventListener('change', applyFilters);
+priceInput?.addEventListener('input', applyFilters);
 paginationEl?.addEventListener('click', (e) => {
   const page = e.target.dataset.page;
   if (page) {

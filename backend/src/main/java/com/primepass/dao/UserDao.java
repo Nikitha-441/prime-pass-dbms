@@ -46,9 +46,14 @@ public class UserDao {
     }
 
     public User createUser(String name, String email, String password) {
-        String sql = "INSERT INTO Users (name, email, password, role) VALUES (?, ?, ?, 'user') RETURNING *";
+        return createUser(name, email, password, "user");
+    }
+
+    public User createUser(String name, String email, String password, String role) {
+        String normalizedRole = "admin".equalsIgnoreCase(role) ? "admin" : "user";
+        String sql = "INSERT INTO Users (name, email, password, role) VALUES (?, ?, ?, ?) RETURNING *";
         try {
-            return jdbcTemplate.queryForObject(sql, userRowMapper, name, email, password);
+            return jdbcTemplate.queryForObject(sql, userRowMapper, name, email, password, normalizedRole);
         } catch (Exception e) {
             return null;
         }
