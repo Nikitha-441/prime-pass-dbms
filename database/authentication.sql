@@ -1,10 +1,3 @@
--- ============================================
--- AUTHENTICATION AND SECURITY
--- ============================================
-
--- Note: In production, passwords should be hashed using bcrypt or similar
--- This example uses simple password storage (for development only)
-
 -- Function to authenticate user
 CREATE OR REPLACE FUNCTION authenticate_user(
     p_email VARCHAR(100),
@@ -30,8 +23,7 @@ BEGIN
         );
     END IF;
     
-    -- Verify password (in production, use proper password hashing)
-    -- For now, simple comparison (REPLACE WITH PROPER HASHING)
+    
     IF v_stored_password != p_password THEN
         RETURN json_build_object(
             'success', false,
@@ -122,11 +114,9 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Security: Create indexes for faster authentication lookups
 CREATE INDEX IF NOT EXISTS idx_users_email ON Users(email);
 CREATE INDEX IF NOT EXISTS idx_users_role ON Users(role);
 
--- Security: Add password update function
 CREATE OR REPLACE FUNCTION update_password(
     p_user_id INT,
     p_old_password VARCHAR(255),
@@ -158,10 +148,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Role-based access control views (already in views.sql)
--- These views automatically filter data based on user role
-
--- Security: Audit log table (optional, for tracking login attempts)
+]
 CREATE TABLE IF NOT EXISTS login_attempts (
     attempt_id SERIAL PRIMARY KEY,
     email VARCHAR(100),
@@ -182,7 +169,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Update authenticate_user to log attempts
 CREATE OR REPLACE FUNCTION authenticate_user_with_logging(
     p_email VARCHAR(100),
     p_password VARCHAR(255),
@@ -191,10 +177,8 @@ CREATE OR REPLACE FUNCTION authenticate_user_with_logging(
 DECLARE
     v_result JSON;
 BEGIN
-    -- Authenticate
     v_result := authenticate_user(p_email, p_password);
     
-    -- Log attempt
     PERFORM log_login_attempt(
         p_email,
         (v_result->>'success')::boolean,
