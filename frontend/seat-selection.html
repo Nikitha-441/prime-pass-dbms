@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PrimePass • Select Seats</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="header">
+  <h1>PrimePass</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="events.html">Events</a>
+    <a href="tickets.html">My Tickets</a>
+    <a href="admin.html" id="adminLink" style="display:none;">Admin Panel</a>
+    <a href="login.html" id="loginLink">Login</a>
+    <a href="register.html" id="registerLink">Register</a>
+    <a href="#" id="logoutLink" style="display:none;">Logout</a>
+  </nav>
+</header>
+<main class="container">
+<button class="btn btn-outline" onclick="history.back()">← Back</button>
+<section class="showtime-summary" id="showtimeSummary">
+  <h2>Select Your Seats</h2>
+  <p>Loading showtime details...</p>
+</section>
+<div class="seat-legend">
+  <span class="legend available">Available</span>
+  <span class="legend selected">Selected</span>
+  <span class="legend blocked">Blocked</span>
+  <span class="legend booked">Booked</span>
+</div>
+<div id="seatGrid" class="seat-grid"></div>
+<button id="continueBtn" class="btn">Continue to Payment</button>
+</main>
+<footer class="footer"><p>© 2025 PrimePass • All Rights Reserved</p></footer>
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/seat-selection.js"></script>
+</body>
+</html>

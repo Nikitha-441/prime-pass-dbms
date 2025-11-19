@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PrimePass • Admin Panel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="header">
+  <h1>PrimePass Admin</h1>
+  <nav>
+    <a href="events.html">User View</a>
+    <a href="tickets.html">All Bookings</a>
+    <a href="admin.html" id="adminLink" style="display:none;">Admin Panel</a>
+    <a href="login.html" id="loginLink">Login</a>
+    <a href="#" id="logoutLink" style="display:none;">Logout</a>
+  </nav>
+</header>
+
+<main class="container">
+  <button class="btn btn-outline" onclick="history.back()">← Back</button>
+  <h2>Admin Dashboard</h2>
+  <p>Manage events, showtimes, seats and view bookings.</p>
+
+  <div class="tabs">
+    <button class="btn btn-outline" data-tab="eventsTab">Events</button>
+    <button class="btn btn-outline" data-tab="showtimesTab">Showtimes</button>
+    <button class="btn btn-outline" data-tab="seatsTab">Seat Management</button>
+    <button class="btn btn-outline" data-tab="bookingsTab">Bookings</button>
+  </div>
+
+  <section id="eventsTab" class="admin-tab">
+    <h3>Event Management</h3>
+    <form id="eventForm" class="admin-form">
+      <input type="hidden" name="eventId">
+      <label>Event Name</label>
+      <input type="text" name="eventName" required>
+      <label>Description</label>
+      <textarea name="description" rows="3"></textarea>
+      <label>Base Price (₹)</label>
+      <input type="number" name="basePrice" min="0" step="0.01" required>
+      <label>Organizer ID</label>
+      <input type="number" name="organizerId" min="1" required>
+      <label>Category ID</label>
+      <input type="number" name="categoryId" min="1" required>
+      <div class="form-actions">
+        <button type="submit" class="btn">Save Event</button>
+        <button type="button" id="resetEventForm" class="btn btn-outline">Clear</button>
+      </div>
+    </form>
+    <div id="adminEventsList" class="card-grid"></div>
+  </section>
+
+  <section id="showtimesTab" class="admin-tab" style="display:none;">
+    <h3>Showtime Management</h3>
+    <form id="showtimeForm" class="admin-form">
+      <label>Event ID</label>
+      <input type="number" name="eventId" min="1" required>
+      <label>Venue ID</label>
+      <input type="number" name="venueId" min="1" required>
+      <label>Show Date &amp; Time</label>
+      <input type="datetime-local" name="showDate" required>
+      <label>Price per Seat (₹)</label>
+      <input type="number" name="price" min="0" step="0.01" required>
+      <button type="submit" class="btn">Add Showtime</button>
+    </form>
+    <h4>Edit / Delete Showtime</h4>
+    <form id="showtimeEditForm" class="admin-form">
+      <label>Showtime ID</label>
+      <input type="number" name="showtimeId" min="1" required>
+      <label>New Venue ID</label>
+      <input type="number" name="venueId" min="1" required>
+      <label>New Show Date &amp; Time</label>
+      <input type="datetime-local" name="showDate" required>
+      <label>New Price per Seat (₹)</label>
+      <input type="number" name="price" min="0" step="0.01" required>
+      <div class="form-actions">
+        <button type="submit" class="btn">Update Showtime</button>
+        <button type="button" id="deleteShowtimeBtn" class="btn btn-outline">Delete Showtime</button>
+      </div>
+    </form>
+    <p class="hint">Use the showtime ID from the database or event details when editing or deleting.</p>
+  </section>
+
+  <section id="seatsTab" class="admin-tab" style="display:none;">
+    <h3>Seat Management</h3>
+    <div class="admin-inline">
+      <label>Showtime ID</label>
+      <input type="number" id="seatsShowtimeId" min="1">
+      <button id="loadSeatsBtn" class="btn btn-outline">Load Seats</button>
+    </div>
+    <div id="adminSeatGrid" class="seat-grid admin-seat-grid"></div>
+    <p class="hint">Click a seat to toggle between Available and Blocked for this showtime.</p>
+  </section>
+
+  <section id="bookingsTab" class="admin-tab" style="display:none;">
+    <h3>All Bookings</h3>
+    <div id="adminBookingsList" class="card-grid"></div>
+  </section>
+</main>
+
+<footer class="footer"><p>© 2025 PrimePass • Admin</p></footer>
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/admin.js"></script>
+</body>
+</html>
+
+

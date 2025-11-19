@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PrimePass • Event Details</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <h1>PrimePass</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="events.html">Events</a>
+      <a href="tickets.html">My Tickets</a>
+      <a href="admin.html" id="adminLink" style="display:none;">Admin Panel</a>
+      <a href="login.html" id="loginLink">Login</a>
+      <a href="register.html" id="registerLink">Register</a>
+      <a href="#" id="logoutLink" style="display:none;">Logout</a>
+    </nav>
+  </header>
+  <main class="container">
+    <button class="btn btn-outline" onclick="history.back()">← Back</button>
+    <div id="eventDetails"></div>
+    <h3>Available Showtimes</h3>
+    <div id="showtimesList" class="card-grid"></div>
+  </main>
+  <footer class="footer"><p>© 2025 PrimePass • All Rights Reserved</p></footer>
+  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/event-details.js"></script>
+</body>
+</html>

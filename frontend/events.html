@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PrimePass • Events</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="header">
+  <h1>PrimePass</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="tickets.html">My Tickets</a>
+    <a href="admin.html" id="adminLink" style="display:none;">Admin Panel</a>
+    <a href="login.html" id="loginLink">Login</a>
+    <a href="register.html" id="registerLink">Register</a>
+    <a href="#" id="logoutLink" style="display:none;">Logout</a>
+  </nav>
+</header>
+<main class="container">
+  <h2>Available Events</h2>
+  <p>Browse movies, concerts, sports, drama, workshops, and more.</p>
+
+  <form id="eventFilters" class="filter-form">
+    <div class="search-control">
+      <label for="eventSearch">Search</label>
+      <input type="search" id="eventSearch" placeholder="Search by event, venue, or city">
+    </div>
+    <div class="search-control">
+      <label for="eventCategory">Category</label>
+      <select id="eventCategory">
+        <option value="all">All</option>
+      </select>
+    </div>
+    <div class="search-control">
+      <label for="eventDate">Date (on/after)</label>
+      <input type="date" id="eventDate">
+    </div>
+    <div class="search-control">
+      <label for="eventPrice">Max Price (₹)</label>
+      <input type="number" id="eventPrice" min="0" placeholder="Any">
+    </div>
+    <div class="filter-actions">
+      <button type="button" class="btn" id="applyEventFilters">Apply</button>
+      <button type="button" class="btn btn-outline" id="resetEventFilters">Reset</button>
+    </div>
+  </form>
+
+  <div id="eventsContainer" class="card-grid"></div>
+  <div id="eventsPagination" class="pagination"></div>
+</main>
+<footer class="footer"><p>© 2025 PrimePass • All Rights Reserved</p></footer>
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/events.js"></script>
+</body>
+</html>

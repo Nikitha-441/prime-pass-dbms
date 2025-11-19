@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PrimePass • Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="header">
+  <h1>PrimePass</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="events.html">Events</a>
+    <a href="tickets.html">My Tickets</a>
+    <a href="admin.html" id="adminLink" style="display:none;">Admin Panel</a>
+    <a href="login.html" id="loginLink">Login</a>
+    <a href="register.html" id="registerLink">Register</a>
+    <a href="#" id="logoutLink" style="display:none;">Logout</a>
+  </nav>
+</header>
+<main class="container">
+<button class="btn btn-outline" onclick="history.back()">← Back</button>
+<form id="loginForm">
+  <h2>Welcome Back</h2>
+  <label>Email</label>
+  <input type="email" name="email" required>
+  <label>Password</label>
+  <input type="password" name="password" required>
+  <button type="submit" class="btn">Login</button>
+  <p>Don't have an account? <a href="register.html">Create one</a></p>
+  <p class="hint">Admins log in with their admin credentials to access the portal.</p>
+</form>
+</main>
+<footer class="footer"><p>© 2025 PrimePass • All Rights Reserved</p></footer>
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/login.js"></script>
+</body>
+</html>
