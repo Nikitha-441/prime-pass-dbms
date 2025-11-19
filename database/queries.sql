@@ -1,9 +1,4 @@
--- ============================================
--- COMPLEX QUERIES: JOINS, NESTED QUERIES, AGGREGATES
--- ============================================
 
--- Query 1: Find events with their showtimes and available seats count
--- Uses JOINs and aggregate functions
 SELECT 
     e.event_id,
     e.event_name,
@@ -22,8 +17,7 @@ LEFT JOIN Seat_Status ss ON st.showtime_id = ss.showtime_id AND s.seat_id = ss.s
 GROUP BY e.event_id, e.event_name, c.category_name, st.showtime_id, st.show_date, st.price, v.name
 ORDER BY e.event_name, st.show_date;
 
--- Query 2: Find most popular events by booking count
--- Uses aggregate functions with GROUP BY and HAVING
+
 SELECT 
     e.event_id,
     e.event_name,
@@ -40,8 +34,7 @@ GROUP BY e.event_id, e.event_name, c.category_name
 HAVING COUNT(DISTINCT b.booking_id) > 0
 ORDER BY total_bookings DESC, total_revenue DESC;
 
--- Query 3: Find users who have booked multiple events
--- Uses nested query with subquery
+
 SELECT 
     u.user_id,
     u.name,
@@ -59,8 +52,7 @@ WHERE u.user_id IN (
 GROUP BY u.user_id, u.name, u.email
 ORDER BY booking_count DESC;
 
--- Query 4: Find showtimes with low availability (less than 20% seats available)
--- Uses nested query and calculations
+
 SELECT 
     st.showtime_id,
     e.event_name,
@@ -78,8 +70,7 @@ GROUP BY st.showtime_id, e.event_name, st.show_date, v.name, v.total_seats
 HAVING COUNT(CASE WHEN ss.status = 'available' THEN 1 END)::numeric / v.total_seats < 0.20
 ORDER BY availability_percent;
 
--- Query 5: Find events with no bookings
--- Uses LEFT JOIN and NULL check
+
 SELECT 
     e.event_id,
     e.event_name,
@@ -93,8 +84,7 @@ LEFT JOIN Booked_Seats bs ON st.showtime_id = bs.showtime_id
 WHERE bs.showtime_id IS NULL
 GROUP BY e.event_id, e.event_name, c.category_name, e.base_price;
 
--- Query 6: Revenue report by category
--- Uses aggregate functions and GROUP BY
+
 SELECT 
     c.category_name,
     COUNT(DISTINCT e.event_id) AS event_count,
@@ -110,8 +100,6 @@ LEFT JOIN Booking b ON bs.booking_id = b.booking_id
 GROUP BY c.category_name
 ORDER BY total_revenue DESC;
 
--- Query 7: Find seats that are booked for a specific showtime
--- Uses multiple JOINs
 SELECT 
     s.seat_id,
     s.seat_number,
@@ -124,11 +112,10 @@ FROM Seat s
 JOIN Seat_Status ss ON s.seat_id = ss.seat_id
 LEFT JOIN Booked_Seats bs ON ss.showtime_id = bs.showtime_id AND ss.seat_id = bs.seat_id
 LEFT JOIN Booking b ON bs.booking_id = b.booking_id
-WHERE ss.showtime_id = ?  -- Parameter: showtime_id
+WHERE ss.showtime_id = ?  
 ORDER BY s.seat_number;
 
--- Query 8: Find upcoming showtimes with available seats
--- Uses date comparison and aggregate
+
 SELECT 
     st.showtime_id,
     e.event_name,
@@ -146,8 +133,7 @@ GROUP BY st.showtime_id, e.event_name, st.show_date, v.name, st.price
 HAVING COUNT(CASE WHEN ss.status = 'available' THEN 1 END) > 0
 ORDER BY st.show_date;
 
--- Query 9: Find organizer performance (events and revenue)
--- Uses aggregate with multiple JOINs
+
 SELECT 
     o.organizer_id,
     o.name AS organizer_name,
@@ -163,8 +149,7 @@ LEFT JOIN Booking b ON bs.booking_id = b.booking_id
 GROUP BY o.organizer_id, o.name
 ORDER BY total_revenue DESC;
 
--- Query 10: Find booking details with payment information
--- Uses LEFT JOIN for optional payment
+
 SELECT 
     b.booking_id,
     b.booking_code,
